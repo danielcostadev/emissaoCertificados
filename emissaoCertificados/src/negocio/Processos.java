@@ -85,16 +85,16 @@ public class Processos {
 
 	// Lista de usuários cadastrados
 	private static List<Processos> processosCadastrados = new ArrayList<>();
-	
+
 	// Método para verificar se um processo está cadastrado
-		public static boolean processoCadastrado(int protocolo) {
-			for (Processos processo : processosCadastrados) {
-				if (processo.getProtocolo() == protocolo) {
-					return true; // Processo encontrado
-				}
+	public static boolean processoCadastrado(int protocolo) {
+		for (Processos processo : processosCadastrados) {
+			if (processo.getProtocolo() == protocolo) {
+				return true; // Processo encontrado
 			}
-			return false; // Processo não encontrado
 		}
+		return false; // Processo não encontrado
+	}
 
 	// Método para gerar protocoloco randomicamente (aleatoriamente)
 	public void gerarProtocolo() {
@@ -124,7 +124,7 @@ public class Processos {
 		this.setTituloDoTrabalho(teclado.nextLine());
 		System.out.print("Digite a data de produção: ");
 		this.setDataDeProducao(teclado.nextLine());
-		
+
 		// Método gera protocolo único para processo
 		gerarProtocolo();
 
@@ -167,19 +167,29 @@ public class Processos {
 			System.out.println("Usuário não cadastrado. Não autorizado a analisar processos.");
 			return;
 		}
+		// Caso a matricula esteja correta associa ao profissional e continua a
+		// aplicação
 		this.setMatriculaDoProfissional(matricula);
 
-		// Verificar se processo existe através do protocolo informado
+		
 		System.out.print("Informe o número do protocolo a ser analisado: ");
-		int protocolo = teclado.nextInt();
+		// Armazena o número digitado pelo usuario como String na variável temporária pu
+		String pu = teclado.nextLine();
+		// Converte a String da variável pu em Inteiro e armazena na variável protocolo,
+		// isso corrige um bug que estava travando a aplicação por causado do valor
+		// inteiro
+		int protocolo = Integer.parseInt(pu);
+		// Verificar se processo existe através do protocolo informado
 		if (!Processos.processoCadastrado(protocolo)) {
 			System.out.println("Processo não localizado. Não é possível analisá-lo!.");
 			return;
 		}
+		// Caso o procolo esteja correta associa ao profissional e continua a aplicação
+		this.setProtocolo(protocolo);
 
 		System.out.print("Informe a data da análise: ");
 		this.setDataDeAnalise(teclado.nextLine());
-		System.out.print("Informe o status da análise [Deferido/Indeferido]: ");
+		// System.out.print("Informe o status da análise [Deferido/Indeferido]: ");
 		this.setStatus(teclado.nextLine());
 
 		// debug
