@@ -85,6 +85,16 @@ public class Processos {
 
 	// Lista de usuários cadastrados
 	private static List<Processos> processosCadastrados = new ArrayList<>();
+	
+	// Método para verificar se um processo está cadastrado
+		public static boolean processoCadastrado(int protocolo) {
+			for (Processos processo : processosCadastrados) {
+				if (processo.getProtocolo() == protocolo) {
+					return true; // Processo encontrado
+				}
+			}
+			return false; // Processo não encontrado
+		}
 
 	// Método para gerar protocoloco randomicamente (aleatoriamente)
 	public void gerarProtocolo() {
@@ -124,8 +134,9 @@ public class Processos {
 		novoProcesso.setTituloDoTrabalho(this.getTituloDoTrabalho());
 		novoProcesso.setDataDeProducao(this.getDataDeProducao());
 		novoProcesso.setProtocolo(this.getProtocolo());
+		novoProcesso.setStatus("Em análise!");
 
-		// Adiciona o novo usuário à lista
+		// Adiciona o novo processo à lista
 		processosCadastrados.add(novoProcesso);
 
 		// Confirmação de cadastro de profissional
@@ -157,6 +168,15 @@ public class Processos {
 			return;
 		}
 		this.setMatriculaDoProfissional(matricula);
+
+		// Verificar se processo existe através do protocolo informado
+		System.out.print("Informe o número do protocolo a ser analisado: ");
+		int protocolo = teclado.nextInt();
+		if (!Processos.processoCadastrado(protocolo)) {
+			System.out.println("Processo não localizado. Não é possível analisá-lo!.");
+			return;
+		}
+
 		System.out.print("Informe a data da análise: ");
 		this.setDataDeAnalise(teclado.nextLine());
 		System.out.print("Informe o status da análise [Deferido/Indeferido]: ");

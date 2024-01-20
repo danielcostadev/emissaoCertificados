@@ -51,6 +51,7 @@ public class Usuarios extends Processos {
 
 	// Lista de usuários cadastrados
 	private static List<Usuarios> usuariosCadastrados = new ArrayList<>();
+	private static List<Usuarios> profCadastrados = new ArrayList<>();
 
 	// Método para verificar se um usuário cliente está cadastrado
 	public static boolean clienteCadastrado(String cpf) {
@@ -61,10 +62,11 @@ public class Usuarios extends Processos {
 		}
 		return false; // Usuário não encontrado
 	}
+	
 
 	// Método para verificar se um usuário Profissional está cadastrado
 	public static boolean profissionalCadastrado(String matricula) {
-		for (Usuarios usuario : usuariosCadastrados) {
+		for (Usuarios usuario : profCadastrados) {
 			if (usuario.getMatricula().equals(matricula)) {
 				return true; // Usuário encontrado
 			}
@@ -127,11 +129,11 @@ public class Usuarios extends Processos {
 		novoUsuario.setMatricula(this.getMatricula());
 
 		// Adiciona o novo usuário à lista
-		usuariosCadastrados.add(novoUsuario);
+		profCadastrados.add(novoUsuario);
 
 		// Confirmação de cadastro de profissional
 		System.out.println("---------------------------------------------");
-		System.out.println("O Profissional " + this.nome + " foi cadastrado com sucesso!");
+		System.out.println("O Profissional " + this.getMatricula() + " foi cadastrado com sucesso!");
 
 	}
 
