@@ -120,21 +120,21 @@ public class Processos {
 		this.setCpfDoAutor(cpf);
 		System.out.print("Digite seu nome: ");
 		this.setNomeDoAutor(teclado.nextLine());
-		System.out.print("Digite o titulo do trabalho: ");
+		System.out.print(getNomeDoAutor() + " Digite o titulo do trabalho: ");
 		this.setTituloDoTrabalho(teclado.nextLine());
-		System.out.print("Digite a data de produção: ");
+		System.out.print(getNomeDoAutor() + " Digite a data de produção: ");
 		this.setDataDeProducao(teclado.nextLine());
 
-		// Método gera protocolo único para processo
+		// chama o método que gera protocolo único para processo
 		gerarProtocolo();
 
-		// Cria um novo objeto Usuarios
+		// Cria um novo objeto Processo
 		Processos novoProcesso = new Processos();
 		novoProcesso.setCpfDoAutor(this.getCpfDoAutor());
 		novoProcesso.setTituloDoTrabalho(this.getTituloDoTrabalho());
 		novoProcesso.setDataDeProducao(this.getDataDeProducao());
 		novoProcesso.setProtocolo(this.getProtocolo());
-		novoProcesso.setStatus("Em análise!");
+		novoProcesso.setStatus(this.getStatus());
 
 		// Adiciona o novo processo à lista
 		processosCadastrados.add(novoProcesso);
@@ -152,6 +152,31 @@ public class Processos {
 		System.out.println(this.getProtocolo());
 	}
 
+	// Método para verificar se protocolo existe na lista
+	public boolean verificaProtocolo() {
+
+		System.out.print("Por favor, informe o número do protocolo a ser analisado: ");
+
+		// Armazena o número digitado pelo usuario como String na variável temporária pu
+		String pu = teclado.nextLine();
+
+		// Converte a String da variável pu em Inteiro e armazena na variável protocolo,
+		// isso corrige um bug que estava travando a aplicação por causado do valor
+		// inteiro sendo recebido diretamente
+		int protocolo = Integer.parseInt(pu);
+
+		// Verificar se processo existe através do protocolo informado
+		if (!Processos.processoCadastrado(protocolo)) {
+			System.out.println("Processo não localizado. Não é possível analisá-lo!.");
+			return false;
+		} else {
+			// Caso o protocolo esteja correto associa ao processo e continua a aplicação
+			this.setProtocolo(protocolo);
+			return true;
+		}
+
+	}
+
 	// Método para analisar processo
 	public void analisarProcesso() {
 
@@ -161,7 +186,7 @@ public class Processos {
 
 		// Verificar se o usuário está cadastrado, e caso esteja permite analisar
 		// processos
-		System.out.print("Informe sua matricula: ");
+		System.out.print("Confirme sua matricula: ");
 		String matricula = teclado.nextLine();
 		if (!Usuarios.profissionalCadastrado(matricula)) {
 			System.out.println("Usuário não cadastrado. Não autorizado a analisar processos.");
@@ -171,32 +196,62 @@ public class Processos {
 		// aplicação
 		this.setMatriculaDoProfissional(matricula);
 
-		
-		System.out.print("Informe o número do protocolo a ser analisado: ");
-		// Armazena o número digitado pelo usuario como String na variável temporária pu
-		String pu = teclado.nextLine();
-		// Converte a String da variável pu em Inteiro e armazena na variável protocolo,
-		// isso corrige um bug que estava travando a aplicação por causado do valor
-		// inteiro
-		int protocolo = Integer.parseInt(pu);
-		// Verificar se processo existe através do protocolo informado
-		if (!Processos.processoCadastrado(protocolo)) {
-			System.out.println("Processo não localizado. Não é possível analisá-lo!.");
-			return;
-		}
-		// Caso o procolo esteja correta associa ao profissional e continua a aplicação
-		this.setProtocolo(protocolo);
+		// Verficiar se protocolo existe na lista
+		if (verificaProtocolo() == true) {
 
-		System.out.print("Informe a data da análise: ");
-		this.setDataDeAnalise(teclado.nextLine());
-		// System.out.print("Informe o status da análise [Deferido/Indeferido]: ");
-		this.setStatus(teclado.nextLine());
+			System.out.print("Informe a data da análise: ");
+			this.setDataDeAnalise(teclado.nextLine());
+			System.out.print("Informe o status da análise [Deferido/Indeferido]: ");
+			this.setStatus(teclado.nextLine());
+
+			// Atualizar Status do Processo após análise do profissional
+			for (Processos processo : processosCadastrados) {
+				processo.setStatus(getStatus());
+			}
+		} else {
+
+			System.out.println("Encerrando a aplicação...");
+			System.exit(0);
+
+		}
 
 		// debug
-		System.out.println("---------------------------------------------");
 		System.out.println(this.getDataDeAnalise());
 		System.out.println(this.getMatriculaDoProfissional());
 		System.out.println(this.getStatus());
+
+	}
+
+	// Métodos para cliente acomapanhar análise e resultado do processo submetido
+	public void acompanharProcesso() {
+
+		System.out.println("---------------------------------------------");
+		System.out.println("---------Acompanhamento de Processos---------");
+		System.out.println("---------------------------------------------");
+
+		// Verficiar se protocolo existe na lista
+		if (verificaProtocolo() == true) {
+
+			// Recupera a lista e exibe para o usuário
+			for (Processos processo : processosCadastrados) {
+				System.out.println("CPF do Autor: " + processo.getCpfDoAutor());
+				System.out.println("Título do Trabalho: " + processo.getTituloDoTrabalho());
+				System.out.println("Data de Produção: " + processo.getDataDeProducao());
+				System.out.println("Protocolo: " + processo.getProtocolo());
+				System.out.println("Status: " + processo.getStatus());
+				System.out.println("--------------");
+			}
+
+		} else {
+
+			System.out.println("Encerrando a aplicação...");
+			System.exit(0);
+
+		}
+
+	}
+
+	public void emitirCertificado() {
 
 	}
 

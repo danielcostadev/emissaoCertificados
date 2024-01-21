@@ -20,6 +20,9 @@ public class Programa {
 		// Analisando novo processo
 		p1.analisarProcesso();
 		
+		c1.acompanharProcesso();
+		
+		
 	}
 	
 }
