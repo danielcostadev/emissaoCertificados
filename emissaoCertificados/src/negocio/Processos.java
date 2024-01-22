@@ -253,6 +253,36 @@ public class Processos {
 
 	public void emitirCertificado() {
 
+		System.out.println("---------------------------------------------");
+		System.out.println("------------Emissão de Certificado-----------");
+		System.out.println("---------------------------------------------");
+
+		for (Processos processo : processosCadastrados) {
+			
+			// Verifica se o protocolo existe e se o processo foi deferido, para poder
+			// permitir a emissão do certificado
+			if (verificaProtocolo() == true && processo.getStatus().equals("deferido")) {
+
+				System.out.println(
+						"Para emitir o certificado de forma online digite [1] ou dirija-se a uma de nossas agênncias e resgate o seu certificado");
+				String resp = teclado.nextLine();
+
+				switch (resp) {
+				case "1":
+					System.out.print("Certificado Emitido com SUCESSO!");
+					;
+
+				}
+
+			} else {
+
+				System.out.println("Encerrando a aplicação...");
+				System.exit(0);
+
+			}
+
+		}
+
 	}
 
 }

@@ -21,6 +21,7 @@ public class Programa {
 		p1.analisarProcesso();
 		
 		c1.acompanharProcesso();
+		c1.emitirCertificado();
 		
 		
 	}
